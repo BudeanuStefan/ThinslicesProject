@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+  # DISCOVERY SERVICE
+  discovery:
+    build:
+      context: ./discovery-service
+      dockerfile: Dockerfile
+    ports:
+      - 8761:8761
+
+  # API GATEWAY
+  gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    ports:
+      - 8765:8765
+    depends_on:
+      - discovery
+  
+  # SERVICES
+  blacklist:
+    build:
+      context: ./blacklist-service
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    depends_on:
+      - discovery
